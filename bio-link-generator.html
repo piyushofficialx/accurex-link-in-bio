@@ -2,15 +2,14 @@
 <html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Accurex Builder V1.0</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
-    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 
     <script>
@@ -29,18 +28,15 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         
-        /* Custom Scrollbar (Main Window) */
-        ::-webkit-scrollbar { width: 8px; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; border: 2px solid transparent; background-clip: content-box; }
-        ::-webkit-scrollbar-thumb:hover { background-color: #94a3b8; }
-        .dark ::-webkit-scrollbar-thumb { background-color: #475569; }
-        .dark ::-webkit-scrollbar-thumb:hover { background-color: #64748b; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #334155; }
 
-        /* Preview Scrollbar */
-        .preview-scroll::-webkit-scrollbar { width: 4px; }
-        .preview-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; }
-        .dark .preview-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+        /* Hide scrollbar for preview but allow scroll */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* Glassmorphism */
         .glass-panel {
@@ -66,15 +62,15 @@
         input[type="color"]::-webkit-color-swatch { border: none; }
     </style>
 </head>
-<body class="bg-[#f1f5f9] dark:bg-[#020617] text-gray-900 dark:text-gray-100 transition-colors duration-300">
+<body class="bg-[#f1f5f9] dark:bg-[#020617] text-gray-900 dark:text-gray-100 transition-colors duration-300 selection:bg-blue-500 selection:text-white">
 
-    <nav class="fixed top-0 w-full z-50 border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-[#020617]/80 backdrop-blur-md transition-colors duration-300">
+    <nav class="fixed top-0 w-full z-40 border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-[#020617]/80 backdrop-blur-md transition-colors duration-300">
         <div class="container mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 bg-black dark:bg-white text-white dark:text-black rounded-lg flex items-center justify-center font-bold shadow-lg">A</div>
                 <div class="flex flex-col">
                     <span class="font-bold text-lg leading-none tracking-tight">Accurex</span>
-                    <span class="text-[10px] text-gray-500 font-semibold uppercase tracking-widest">Studio</span>
+                    <span class="text-[10px] text-gray-500 font-semibold uppercase tracking-widest">Builder</span>
                 </div>
             </div>
             
@@ -83,13 +79,13 @@
                     <i data-lucide="moon" class="w-5 h-5"></i>
                 </button>
                 <button id="export-btn" class="hidden md:flex bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold items-center gap-2 hover:shadow-lg hover:shadow-blue-500/25 transition-all active:scale-95">
-                    <i data-lucide="download" class="w-4 h-4"></i> Export Site
+                    <i data-lucide="download" class="w-4 h-4"></i> Export
                 </button>
             </div>
         </div>
     </nav>
 
-    <main class="pt-28 pb-20 min-h-screen">
+    <main class="pt-28 pb-32 md:pb-20 min-h-screen">
         <div class="container mx-auto px-4 md:px-6">
             
             <div class="flex justify-center mb-10">
@@ -98,7 +94,7 @@
                       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                       <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                     </span>
-                    V 1.0 Builder
+                    Live Editor
                 </div>
             </div>
 
@@ -108,22 +104,22 @@
 
                     <div class="glass-panel p-6 rounded-3xl animate-fade-in">
                         <h2 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-5 flex items-center gap-2">
-                            <i data-lucide="award" class="w-4 h-4"></i> Branding / Logo
+                            <i data-lucide="award" class="w-4 h-4"></i> Branding
                         </h2>
                         <div class="flex items-center gap-4">
                             <div class="relative group w-full max-w-[120px]">
                                 <label for="logo-upload" class="cursor-pointer">
-                                    <div id="logo-preview-box" class="h-20 w-full rounded-xl bg-gray-100 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center hover:border-blue-500 transition-colors">
+                                    <div id="logo-preview-box" class="h-20 w-full rounded-xl bg-gray-50 dark:bg-gray-800/50 border-2 border-dashed border-gray-300 dark:border-gray-700 flex flex-col items-center justify-center hover:border-blue-500 transition-colors">
                                         <i data-lucide="upload" class="w-5 h-5 text-gray-400 mb-1"></i>
                                         <span class="text-[10px] text-gray-400 font-medium">Add Logo</span>
-                                        <img id="logo-img-preview" src="" class="absolute inset-0 w-full h-full object-contain p-2 hidden">
+                                        <img id="logo-img-preview" src="" class="absolute inset-0 w-full h-full object-contain p-2 hidden bg-white dark:bg-gray-800 rounded-lg">
                                     </div>
                                 </label>
                                 <input type="file" id="logo-upload" accept="image/*" class="hidden">
                                 <button id="remove-logo-btn" class="hidden text-xs text-red-500 mt-1 w-full text-center hover:underline">Remove</button>
                             </div>
                             <div class="flex-1">
-                                <p class="text-sm text-gray-500 mb-2">Upload a PNG/SVG logo to appear at the top. Leave empty to hide.</p>
+                                <p class="text-sm text-gray-500">Upload a PNG/SVG logo to appear at the top.</p>
                             </div>
                         </div>
                     </div>
@@ -136,7 +132,7 @@
                         <div class="flex items-start gap-5">
                             <div class="relative group shrink-0">
                                 <label for="profile-upload" class="cursor-pointer block">
-                                    <div id="profile-preview-box" class="w-24 h-24 rounded-full bg-gray-100 dark:bg-gray-800 overflow-hidden border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center hover:border-blue-500 transition-colors shadow-sm">
+                                    <div id="profile-preview-box" class="w-24 h-24 rounded-full bg-gray-50 dark:bg-gray-800/50 overflow-hidden border-2 border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center hover:border-blue-500 transition-colors shadow-sm">
                                         <i data-lucide="camera" class="w-6 h-6 text-gray-400"></i>
                                         <img id="profile-img-preview" src="" class="absolute inset-0 w-full h-full object-cover hidden">
                                     </div>
@@ -145,8 +141,8 @@
                             </div>
                             
                             <div class="flex-1 space-y-3">
-                                <input type="text" id="name-input" placeholder="Display Name" class="w-full p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 outline-none transition-all font-semibold">
-                                <textarea id="bio-input" rows="2" placeholder="Write a short bio..." class="w-full p-3.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-none text-sm"></textarea>
+                                <input type="text" id="name-input" placeholder="Display Name" class="w-full p-3.5 rounded-xl bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 outline-none transition-all font-semibold">
+                                <textarea id="bio-input" rows="2" placeholder="Write a short bio..." class="w-full p-3.5 rounded-xl bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-none text-sm"></textarea>
                             </div>
                         </div>
                     </div>
@@ -154,52 +150,67 @@
                     <div class="glass-panel p-6 rounded-3xl animate-fade-in" style="animation-delay: 0.2s;">
                         <div class="flex justify-between items-center mb-5">
                             <h2 class="text-xs font-bold uppercase tracking-wider text-gray-500 flex items-center gap-2">
-                                <i data-lucide="link" class="w-4 h-4"></i> Links Manager
+                                <i data-lucide="link" class="w-4 h-4"></i> Links
                             </h2>
                         </div>
 
                         <div class="bg-gray-50 dark:bg-gray-900/50 p-5 rounded-2xl mb-6 border border-gray-100 dark:border-gray-800 shadow-inner">
                             <div class="grid grid-cols-1 md:grid-cols-12 gap-3 mb-3">
                                 <div class="md:col-span-4">
-                                    <select id="platform-select" class="w-full h-full p-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 outline-none focus:ring-2 focus:ring-blue-500 text-sm appearance-none cursor-pointer">
-                                        <option value="custom">🌐 Custom Link</option>
-                                        <option value="youtube">▶️ YouTube</option>
-                                        <option value="instagram">📸 Instagram</option>
-                                        <option value="linkedin">💼 LinkedIn</option>
-                                        <option value="twitter">🐦 X (Twitter)</option>
-                                        <option value="github">💻 GitHub</option>
-                                        <option value="tiktok">🎵 TikTok</option>
-                                        <option value="portfolio">🎨 Portfolio</option>
-                                        <option value="email">📧 Email</option>
-                                    </select>
+                                    <div class="relative group">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <i data-lucide="globe" class="h-4 w-4 text-gray-400 group-hover:text-blue-500 transition-colors"></i>
+                                        </div>
+                                        <select id="platform-select" class="appearance-none w-full p-3 pl-10 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 outline-none focus:ring-2 focus:ring-blue-500 text-sm cursor-pointer transition-all">
+                                            <option value="custom">Custom Link</option>
+                                            <option value="youtube">YouTube</option>
+                                            <option value="instagram">Instagram</option>
+                                            <option value="linkedin">LinkedIn</option>
+                                            <option value="twitter">X (Twitter)</option>
+                                            <option value="github">GitHub</option>
+                                            <option value="tiktok">TikTok</option>
+                                            <option value="portfolio">Portfolio</option>
+                                            <option value="email">Email</option>
+                                        </select>
+                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                            <i data-lucide="chevron-down" class="h-4 w-4 text-gray-400"></i>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="md:col-span-8">
                                     <input type="text" id="link-title" placeholder="Link Title (e.g. My Website)" class="w-full p-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 outline-none focus:ring-2 focus:ring-blue-500 text-sm">
                                 </div>
                             </div>
                             <div class="flex gap-3">
-                                <input type="text" id="link-url" placeholder="https://..." class="flex-1 p-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 outline-none focus:ring-2 focus:ring-blue-500 text-sm font-mono">
-                                <button id="add-link-btn" class="bg-black dark:bg-white text-white dark:text-black px-6 rounded-xl font-bold hover:opacity-80 transition-all shadow-lg text-sm">
-                                    Add
+                                <div class="relative flex-1">
+                                    <input type="text" id="link-url" placeholder="https://..." class="w-full p-3 pl-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 outline-none focus:ring-2 focus:ring-blue-500 text-sm font-mono">
+                                </div>
+                                <button id="add-link-btn" class="bg-gray-900 dark:bg-white text-white dark:text-black px-6 rounded-xl font-bold hover:opacity-90 transition-all shadow-lg text-sm flex items-center gap-2">
+                                    <i data-lucide="plus" class="w-4 h-4"></i> Add
                                 </button>
                             </div>
                         </div>
 
                         <div id="links-container" class="space-y-3 min-h-[20px]">
-                            <p id="empty-state" class="text-center text-gray-400 text-sm py-4 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-xl">No links added yet.</p>
+                            <p id="empty-state" class="text-center text-gray-400 text-sm py-8 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-xl">
+                                No links added yet. Add one above!
+                            </p>
                         </div>
                     </div>
 
                     <div class="glass-panel p-6 rounded-3xl animate-fade-in" style="animation-delay: 0.3s;">
                         <h2 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-5 flex items-center gap-2">
-                            <i data-lucide="palette" class="w-4 h-4"></i> Design & Style
+                            <i data-lucide="palette" class="w-4 h-4"></i> Customization
                         </h2>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-xs font-semibold mb-2 ml-1 text-gray-600 dark:text-gray-400">Theme</label>
-                                <div class="relative">
-                                    <select id="bg-style" class="w-full p-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 outline-none focus:ring-2 focus:ring-blue-500 text-sm appearance-none">
+                                <label class="block text-xs font-semibold mb-2 ml-1 text-gray-600 dark:text-gray-400">Background</label>
+                                <div class="relative group">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i data-lucide="image" class="h-4 w-4 text-gray-400"></i>
+                                    </div>
+                                    <select id="bg-style" class="appearance-none w-full p-3 pl-10 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 outline-none focus:ring-2 focus:ring-blue-500 text-sm">
                                         <option value="flat">Clean Flat</option>
                                         <option value="gradient-blue">Ocean Gradient</option>
                                         <option value="gradient-purple">Nebula Gradient</option>
@@ -207,37 +218,42 @@
                                         <option value="dark">Midnight Dark</option>
                                         <option value="mesh">Abstract Mesh</option>
                                     </select>
-                                    <i data-lucide="chevron-down" class="absolute right-3 top-3.5 w-4 h-4 text-gray-400 pointer-events-none"></i>
+                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                        <i data-lucide="chevron-down" class="h-4 w-4 text-gray-400"></i>
+                                    </div>
                                 </div>
                             </div>
 
                             <div>
                                 <label class="block text-xs font-semibold mb-2 ml-1 text-gray-600 dark:text-gray-400">Card Style</label>
-                                <div class="relative">
-                                    <select id="card-style" class="w-full p-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 outline-none focus:ring-2 focus:ring-blue-500 text-sm appearance-none">
+                                <div class="relative group">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <i data-lucide="layout-template" class="h-4 w-4 text-gray-400"></i>
+                                    </div>
+                                    <select id="card-style" class="appearance-none w-full p-3 pl-10 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 outline-none focus:ring-2 focus:ring-blue-500 text-sm">
                                         <option value="solid">Solid Fill</option>
                                         <option value="glass">Glass / Blur</option>
                                         <option value="outline">Outline Only</option>
                                         <option value="soft">Soft Shadow</option>
                                         <option value="hard">Hard Shadow</option>
                                     </select>
-                                    <i data-lucide="chevron-down" class="absolute right-3 top-3.5 w-4 h-4 text-gray-400 pointer-events-none"></i>
+                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                        <i data-lucide="chevron-down" class="h-4 w-4 text-gray-400"></i>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="md:col-span-2 grid grid-cols-2 gap-4">
                                 <div class="flex items-center gap-3 p-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-                                    <input type="color" id="accent-color-picker" value="#2563eb">
+                                    <input type="color" id="accent-color-picker" value="#2563eb" class="bg-transparent">
                                     <div class="flex flex-col">
                                         <span class="text-xs font-bold uppercase text-gray-500">Accent</span>
-                                        <span class="text-[10px] text-gray-400">Buttons & Links</span>
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-3 p-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-                                    <input type="color" id="text-color-picker" value="#ffffff">
+                                    <input type="color" id="text-color-picker" value="#ffffff" class="bg-transparent">
                                     <div class="flex flex-col">
                                         <span class="text-xs font-bold uppercase text-gray-500">Text</span>
-                                        <span class="text-[10px] text-gray-400">Button Text Color</span>
                                     </div>
                                 </div>
                             </div>
@@ -246,37 +262,33 @@
 
                     <div class="glass-panel p-6 rounded-3xl animate-fade-in" style="animation-delay: 0.4s;">
                          <h2 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-5 flex items-center gap-2">
-                            <i data-lucide="search" class="w-4 h-4"></i> SEO & Meta
+                            <i data-lucide="search" class="w-4 h-4"></i> Metadata
                         </h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                              <input type="text" id="seo-title" placeholder="Browser Tab Title" class="w-full p-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 outline-none text-sm focus:ring-2 focus:ring-blue-500">
                              <input type="text" id="seo-desc" placeholder="Meta Description" class="w-full p-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 outline-none text-sm focus:ring-2 focus:ring-blue-500">
                              <div class="flex items-center gap-2 md:col-span-2 p-1">
                                 <input type="checkbox" id="verified-badge" class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                                <label for="verified-badge" class="text-sm font-medium text-gray-700 dark:text-gray-300">Show Blue Verified Badge</label>
+                                <label for="verified-badge" class="text-sm font-medium text-gray-700 dark:text-gray-300">Show Verified Badge</label>
                              </div>
                         </div>
                     </div>
 
-                    <button id="export-btn-mobile" class="md:hidden w-full bg-blue-600 text-white py-4 rounded-xl font-bold shadow-xl active:scale-95 transition-transform">
-                        Download Website
-                    </button>
-                    
-                    <footer class="text-center text-xs text-gray-400 pb-10">
-                        © 2025 Accurex Studio · Built with V 1.0 Builder
-                    </footer>
+                    <div class="md:hidden pb-10">
+                        <button id="export-btn-mobile" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-xl font-bold shadow-xl active:scale-95 transition-transform flex items-center justify-center gap-2">
+                            <i data-lucide="download" class="w-5 h-5"></i> Download Website
+                        </button>
+                    </div>
                 </div>
 
-                <div class="lg:col-span-5 sticky top-28 h-[800px]">
-                    <div class="relative mx-auto w-[360px] h-[720px] bg-gray-900 dark:bg-[#121212] rounded-[55px] shadow-2xl border-[10px] border-gray-900 dark:border-[#1e1e1e] ring-1 ring-white/10 z-10">
-                        
+                <div class="hidden lg:block lg:col-span-5 sticky top-28 h-[85vh]">
+                    <div class="relative mx-auto w-[340px] h-[700px] bg-gray-900 dark:bg-[#121212] rounded-[55px] shadow-2xl border-[10px] border-gray-900 dark:border-[#1e1e1e] ring-1 ring-white/10 z-10">
                         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-black rounded-b-3xl z-30 flex items-center justify-center">
                             <div class="w-20 h-4 bg-black rounded-full flex items-center justify-end px-2 gap-1.5">
                                 <div class="w-1.5 h-1.5 rounded-full bg-green-500/80"></div>
                                 <div class="w-1.5 h-1.5 rounded-full bg-orange-500/80"></div>
                             </div>
                         </div>
-
                         <div class="absolute top-28 -left-[12px] w-[3px] h-12 bg-gray-700 rounded-l-md"></div>
                         <div class="absolute top-44 -left-[12px] w-[3px] h-16 bg-gray-700 rounded-l-md"></div>
                         <div class="absolute top-32 -right-[12px] w-[3px] h-24 bg-gray-700 rounded-r-md"></div>
@@ -288,56 +300,59 @@
                         
                         <div class="absolute inset-0 rounded-[55px] pointer-events-none shadow-[inset_0_0_20px_rgba(255,255,255,0.05)] z-40"></div>
                     </div>
-                    
-                    <p class="text-center text-xs font-bold text-gray-400 mt-8 tracking-widest uppercase">Live Preview</p>
+                    <p class="text-center text-xs font-bold text-gray-400 mt-6 tracking-widest uppercase">Live Preview</p>
                 </div>
 
             </div>
         </div>
     </main>
 
+    <div class="lg:hidden fixed bottom-6 right-6 z-50">
+        <button id="mobile-preview-btn" class="w-14 h-14 bg-black dark:bg-white text-white dark:text-black rounded-full shadow-2xl flex items-center justify-center hover:scale-105 active:scale-90 transition-all">
+            <i data-lucide="eye" class="w-6 h-6"></i>
+        </button>
+    </div>
+
+    <div id="mobile-preview-modal" class="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm hidden flex flex-col items-center justify-center p-4">
+        <button id="close-mobile-preview" class="absolute top-4 right-4 p-2 bg-white/10 rounded-full text-white">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+        <div class="w-full max-w-sm h-[80vh] bg-white rounded-[40px] overflow-hidden relative shadow-2xl border-4 border-gray-900">
+             <div id="mobile-preview-frame" class="w-full h-full overflow-y-auto no-scrollbar">
+                </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
             // --- LENIS SMOOTH SCROLL ---
-            const lenis = new Lenis({
-                duration: 1.2,
-                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                smooth: true,
-            });
-            function raf(time) {
-                lenis.raf(time);
-                requestAnimationFrame(raf);
-            }
+            const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smooth: true });
+            function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
             requestAnimationFrame(raf);
 
-            // --- STATE MANAGEMENT ---
+            // --- STATE ---
             const state = {
                 logo: '',
                 profile: { name: '', bio: '', image: '', verified: false },
                 links: [],
-                seo: { title: 'My Links', desc: 'Welcome to my personalized page.' },
-                style: {
-                    bg: 'flat',
-                    card: 'solid',
-                    accentColor: '#2563eb',
-                    textColor: '#ffffff'
-                }
+                seo: { title: 'My Links', desc: 'Welcome to my page.' },
+                style: { bg: 'flat', card: 'solid', accentColor: '#2563eb', textColor: '#ffffff' }
             };
 
-            // --- DOM ELEMENTS ---
+            // --- ELEMENTS ---
             const els = {
+                // Inputs
                 logoUpload: document.getElementById('logo-upload'),
                 logoPreview: document.getElementById('logo-img-preview'),
-                logoBox: document.getElementById('logo-preview-box'),
                 removeLogoBtn: document.getElementById('remove-logo-btn'),
-
                 profileUpload: document.getElementById('profile-upload'),
                 profilePreview: document.getElementById('profile-img-preview'),
                 nameInput: document.getElementById('name-input'),
                 bioInput: document.getElementById('bio-input'),
                 verifiedCheck: document.getElementById('verified-badge'),
                 
+                // Link Manager
                 platformSelect: document.getElementById('platform-select'),
                 linkTitle: document.getElementById('link-title'),
                 linkUrl: document.getElementById('link-url'),
@@ -345,22 +360,31 @@
                 linksContainer: document.getElementById('links-container'),
                 emptyState: document.getElementById('empty-state'),
                 
+                // Style
                 bgSelect: document.getElementById('bg-style'),
                 cardSelect: document.getElementById('card-style'),
                 accentPicker: document.getElementById('accent-color-picker'),
                 textPicker: document.getElementById('text-color-picker'),
                 
+                // SEO
                 seoTitle: document.getElementById('seo-title'),
                 seoDesc: document.getElementById('seo-desc'),
                 
+                // Desktop Preview
                 screen: document.getElementById('preview-screen'),
                 content: document.getElementById('preview-content'),
                 
+                // Mobile Preview
+                mobileBtn: document.getElementById('mobile-preview-btn'),
+                mobileModal: document.getElementById('mobile-preview-modal'),
+                closeMobileBtn: document.getElementById('close-mobile-preview'),
+                mobileFrame: document.getElementById('mobile-preview-frame'),
+                
+                // System
                 exportBtns: [document.getElementById('export-btn'), document.getElementById('export-btn-mobile')],
                 themeToggle: document.getElementById('theme-toggle')
             };
 
-            // --- PLATFORM DATA ---
             const platforms = {
                 custom: { label: 'Custom Link', icon: 'link' },
                 youtube: { label: 'YouTube', icon: 'youtube', placeholder: 'https://youtube.com/@...' },
@@ -370,19 +394,18 @@
                 github: { label: 'GitHub', icon: 'github', placeholder: 'https://github.com/...' },
                 tiktok: { label: 'TikTok', icon: 'music-2', placeholder: 'https://tiktok.com/@...' },
                 portfolio: { label: 'Portfolio', icon: 'briefcase', placeholder: 'https://myportfolio.com' },
-                email: { label: 'Email', icon: 'mail', placeholder: 'mailto:your@email.com' },
+                email: { label: 'Email', icon: 'mail', placeholder: 'mailto:...' },
             };
 
-            // --- HELPER: Read Image ---
             const readImage = (file, callback) => {
                 const reader = new FileReader();
                 reader.onload = (e) => callback(e.target.result);
                 reader.readAsDataURL(file);
             };
 
-            // --- EVENT LISTENERS FOR LIVE UPDATES ---
+            // --- LISTENERS ---
             
-            // 1. Profile & Logo
+            // Images
             els.profileUpload.addEventListener('change', (e) => {
                 if (e.target.files[0]) readImage(e.target.files[0], (base64) => {
                     state.profile.image = base64;
@@ -410,7 +433,7 @@
                 renderPreview();
             });
 
-            // 2. Text Inputs (Reactivity Fix)
+            // Text Inputs
             [els.nameInput, els.bioInput, els.seoTitle, els.seoDesc].forEach(el => {
                 el.addEventListener('input', (e) => {
                     if(e.target === els.nameInput) state.profile.name = e.target.value;
@@ -420,13 +443,10 @@
                     renderPreview();
                 });
             });
+            
+            els.verifiedCheck.addEventListener('change', (e) => { state.profile.verified = e.target.checked; renderPreview(); });
 
-            els.verifiedCheck.addEventListener('change', (e) => {
-                state.profile.verified = e.target.checked;
-                renderPreview();
-            });
-
-            // 3. Styles
+            // Styling
             [els.bgSelect, els.cardSelect].forEach(el => {
                 el.addEventListener('change', (e) => {
                     if(e.target === els.bgSelect) state.style.bg = e.target.value;
@@ -434,7 +454,6 @@
                     renderPreview();
                 });
             });
-
             [els.accentPicker, els.textPicker].forEach(el => {
                 el.addEventListener('input', (e) => {
                     if(e.target === els.accentPicker) state.style.accentColor = e.target.value;
@@ -443,7 +462,7 @@
                 });
             });
 
-            // --- LINK MANAGEMENT ---
+            // Links
             els.platformSelect.addEventListener('change', (e) => {
                 const p = platforms[e.target.value];
                 els.linkTitle.value = p.label;
@@ -463,7 +482,19 @@
                 }
             });
 
-            // --- RENDER FUNCTIONS ---
+            // Mobile Preview Toggle
+            els.mobileBtn.addEventListener('click', () => {
+                els.mobileFrame.className = els.screen.className; // Copy BG classes
+                els.mobileFrame.innerHTML = els.content.innerHTML; // Copy Content
+                // Fix spacing for mobile view
+                els.mobileFrame.classList.add('p-6', 'pt-12');
+                els.mobileModal.classList.remove('hidden');
+                lucide.createIcons();
+            });
+            els.closeMobileBtn.addEventListener('click', () => els.mobileModal.classList.add('hidden'));
+
+
+            // --- RENDERING ---
             function renderControls() {
                 els.linksContainer.innerHTML = '';
                 if (state.links.length === 0) {
@@ -475,13 +506,11 @@
                         const div = document.createElement('div');
                         div.className = 'group flex items-center gap-3 bg-white dark:bg-gray-800 p-3 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm animate-fade-in';
                         div.dataset.id = link.id;
-                        const iconName = platforms[link.type]?.icon || 'link';
-                        
                         div.innerHTML = `
                             <div class="handle cursor-grab p-1 text-gray-400 hover:text-blue-500"><i data-lucide="grip-vertical" class="w-5 h-5"></i></div>
                             <div class="flex-1 min-w-0 grid gap-1">
-                                <div class="flex items-center gap-2 border-b border-transparent focus-within:border-blue-500 transition-colors">
-                                    <i data-lucide="${iconName}" class="w-3.5 h-3.5 text-gray-500"></i>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="${platforms[link.type]?.icon || 'link'}" class="w-3.5 h-3.5 text-gray-500"></i>
                                     <input type="text" class="edit-title bg-transparent text-sm font-bold w-full outline-none text-gray-800 dark:text-gray-200" value="${link.title}">
                                 </div>
                                 <input type="text" class="edit-url bg-transparent text-[10px] text-gray-400 w-full outline-none font-mono" value="${link.url}">
@@ -489,7 +518,6 @@
                             <button class="delete-btn p-2 hover:bg-red-50 dark:hover:bg-red-900/30 text-gray-400 hover:text-red-500 rounded-lg transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                         `;
                         els.linksContainer.appendChild(div);
-
                         div.querySelector('.edit-title').addEventListener('input', (e) => { state.links[index].title = e.target.value; renderPreview(); });
                         div.querySelector('.edit-url').addEventListener('input', (e) => { state.links[index].url = e.target.value; renderPreview(); });
                         div.querySelector('.delete-btn').addEventListener('click', () => { state.links.splice(index, 1); renderControls(); renderPreview(); });
@@ -499,7 +527,7 @@
             }
 
             function renderPreview() {
-                // 1. Background
+                // Style Logic
                 let bgClass = '';
                 switch(state.style.bg) {
                     case 'flat': bgClass = 'bg-[#f8fafc]'; break;
@@ -511,7 +539,6 @@
                 }
                 els.screen.className = `absolute inset-0 rounded-[45px] overflow-hidden transition-all duration-500 z-0 flex flex-col ${bgClass}`;
 
-                // 2. Card Style
                 let cardStyle = '';
                 const isDarkBg = state.style.bg === 'dark';
                 
@@ -522,12 +549,12 @@
                 } else if (state.style.card === 'glass') {
                     cardStyle = `background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); color: ${isDarkBg ? 'white' : 'black'};`;
                 } else if (state.style.card === 'soft') {
-                     cardStyle = `background-color: white; color: black; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);`;
+                      cardStyle = `background-color: white; color: black; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);`;
                 } else if (state.style.card === 'hard') {
-                     cardStyle = `background-color: white; color: black; border: 2px solid black; box-shadow: 4px 4px 0px black;`;
+                      cardStyle = `background-color: white; color: black; border: 2px solid black; box-shadow: 4px 4px 0px black;`;
                 }
 
-                // 3. Components
+                // HTML Construction
                 const imgHTML = state.profile.image 
                     ? `<img src="${state.profile.image}" class="w-full h-full object-cover">` 
                     : `<div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400 text-2xl font-bold">${state.profile.name.charAt(0) || 'U'}</div>`;
@@ -539,8 +566,7 @@
                 const mainTextColor = isDarkBg ? 'text-white' : 'text-gray-900';
                 const subTextColor = isDarkBg ? 'text-gray-400' : 'text-gray-500';
 
-                // 4. Inject HTML
-                els.content.innerHTML = `
+                const contentHTML = `
                     <div class="animate-fade-in flex flex-col items-center w-full">
                         ${logoHTML}
                         <div class="w-24 h-24 rounded-full overflow-hidden ring-4 ring-white/40 shadow-xl mb-4 mx-auto bg-gray-50">
@@ -565,32 +591,14 @@
                     </div>
                 `;
                 
-                // CRITICAL FIX: Re-initialize icons inside preview
+                els.content.innerHTML = contentHTML;
                 lucide.createIcons();
             }
 
-            // --- SORTABLE ---
-            new Sortable(els.linksContainer, {
-                handle: '.handle',
-                animation: 150,
-                ghostClass: 'ghost-class',
-                onEnd: () => {
-                    const newOrder = Array.from(els.linksContainer.children).map(child => Number(child.dataset.id));
-                    state.links.sort((a,b) => newOrder.indexOf(a.id) - newOrder.indexOf(b.id));
-                    renderPreview();
-                }
-            });
-
-            // --- THEME ---
-            const toggleTheme = () => {
-                const isDark = document.documentElement.classList.toggle('dark');
-                els.themeToggle.innerHTML = isDark ? '<i data-lucide="sun" class="w-5 h-5"></i>' : '<i data-lucide="moon" class="w-5 h-5"></i>';
-                lucide.createIcons();
-            };
-            els.themeToggle.addEventListener('click', toggleTheme);
-
-            // --- EXPORT ---
+            // Export logic (same as before but simplified)
             const exportHTML = () => {
+               // ... (Keeping your existing logic, it was fine)
+               // Reusing styling logic for consistency
                 let outputBgClass = '';
                 switch(state.style.bg) {
                     case 'flat': outputBgClass = 'bg-slate-50 text-slate-900'; break;
@@ -608,54 +616,8 @@
                 else if(state.style.card === 'soft') cardCss = `background: white; color: black; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);`;
                 else if(state.style.card === 'hard') cardCss = `background: white; color: black; border: 2px solid black; box-shadow: 4px 4px 0px black;`;
 
-                const htmlContent = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${state.seo.title}</title>
-    <meta name="description" content="${state.seo.desc}">
-    <script src="https://cdn.tailwindcss.com"><\/script>
-    <script src="https://unpkg.com/lucide@latest"><\/script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .link-card {
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            width: 100%; padding: 16px; margin-bottom: 12px; border-radius: 12px;
-            font-weight: 700; text-decoration: none; transition: transform 0.2s;
-            ${cardCss}
-        }
-        .link-card:active { transform: scale(0.98); }
-    </style>
-</head>
-<body class="min-h-screen flex flex-col items-center py-12 px-4 ${outputBgClass}">
-    <div class="w-full max-w-md animate-[fadeIn_0.5s_ease-out]">
-        <div class="flex flex-col items-center text-center">
-            ${state.logo ? `<img src="${state.logo}" class="h-12 mb-6 object-contain">` : ''}
-            <div class="w-24 h-24 rounded-full overflow-hidden shadow-xl mb-4 ring-4 ring-white/30 bg-gray-100">
-                ${state.profile.image ? `<img src="${state.profile.image}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-2xl font-bold text-gray-400 bg-gray-200">${state.profile.name.charAt(0)}</div>`}
-            </div>
-            <h1 class="text-2xl font-bold flex items-center justify-center gap-1 mb-2 leading-tight">
-                ${state.profile.name}
-                ${state.profile.verified ? `<i data-lucide="badge-check" class="w-5 h-5 text-blue-500 fill-blue-500/10"></i>` : ''}
-            </h1>
-            <p class="text-sm opacity-80 mb-8 max-w-xs leading-relaxed whitespace-pre-wrap">${state.profile.bio}</p>
-            <div class="w-full">
-                ${state.links.map(link => `
-                    <a href="${link.url}" target="_blank" class="link-card">
-                        <i data-lucide="${platforms[link.type]?.icon || 'link'}" width="20"></i>
-                        ${link.title}
-                    </a>
-                `).join('')}
-            </div>
-            <div class="mt-12 text-xs opacity-50">Created with Accurex Studio</div>
-        </div>
-    </div>
-    <script>lucide.createIcons();<\/script>
-</body>
-</html>`;
+                const htmlContent = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${state.seo.title}</title><meta name="description" content="${state.seo.desc}"><script src="https://cdn.tailwindcss.com"><\/script><script src="https://unpkg.com/lucide@latest"><\/script><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"><style>body{font-family:'Plus Jakarta Sans',sans-serif}.link-card{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:16px;margin-bottom:12px;border-radius:12px;font-weight:700;text-decoration:none;transition:transform 0.2s;${cardCss}}.link-card:active{transform:scale(0.98)}</style></head><body class="min-h-screen flex flex-col items-center py-12 px-4 ${outputBgClass}"><div class="w-full max-w-md animate-[fadeIn_0.5s_ease-out]"><div class="flex flex-col items-center text-center">${state.logo?`<img src="${state.logo}" class="h-12 mb-6 object-contain">`:''}<div class="w-24 h-24 rounded-full overflow-hidden shadow-xl mb-4 ring-4 ring-white/30 bg-gray-100">${state.profile.image?`<img src="${state.profile.image}" class="w-full h-full object-cover">`:`<div class="w-full h-full flex items-center justify-center text-2xl font-bold text-gray-400 bg-gray-200">${state.profile.name.charAt(0)}</div>`}</div><h1 class="text-2xl font-bold flex items-center justify-center gap-1 mb-2 leading-tight">${state.profile.name}${state.profile.verified?`<i data-lucide="badge-check" class="w-5 h-5 text-blue-500 fill-blue-500/10"></i>`:''}</h1><p class="text-sm opacity-80 mb-8 max-w-xs leading-relaxed whitespace-pre-wrap">${state.profile.bio}</p><div class="w-full">${state.links.map(link=>`<a href="${link.url}" target="_blank" class="link-card"><i data-lucide="${platforms[link.type]?.icon||'link'}" width="20"></i>${link.title}</a>`).join('')}</div><div class="mt-12 text-xs opacity-50">Created with Accurex Studio</div></div></div><script>lucide.createIcons();<\/script></body></html>`;
+                
                 const blob = new Blob([htmlContent], { type: 'text/html' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -665,8 +627,20 @@
             };
 
             els.exportBtns.forEach(btn => btn.addEventListener('click', exportHTML));
+            
+            // Initialization
+            new Sortable(els.linksContainer, { handle: '.handle', animation: 150, ghostClass: 'ghost-class', onEnd: () => {
+                const newOrder = Array.from(els.linksContainer.children).map(child => Number(child.dataset.id));
+                state.links.sort((a,b) => newOrder.indexOf(a.id) - newOrder.indexOf(b.id));
+                renderPreview();
+            }});
+            
+            els.themeToggle.addEventListener('click', () => {
+                const isDark = document.documentElement.classList.toggle('dark');
+                els.themeToggle.innerHTML = isDark ? '<i data-lucide="sun" class="w-5 h-5"></i>' : '<i data-lucide="moon" class="w-5 h-5"></i>';
+                lucide.createIcons();
+            });
 
-            // Initial Render
             lucide.createIcons();
             renderPreview();
         });
